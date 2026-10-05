@@ -17,19 +17,26 @@ census_1900 = census.loc[census['Year'] == 1900, ["Age", "People"]]
 census_2000 = census.loc[census['Year'] == 2000, ["Age", "People"]]
 
 # Plot w/ side-by-side bars for 1900 and 2000
-plt.figure(figsize=(10, 6))
-plt.hist([census_1900["Age"], census_2000["Age"]],
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.hist([census_1900["Age"], census_2000["Age"]],
          bins=age_bins,
          weights=[census_1900["People"], census_2000["People"]],
          label=["1900", "2000"],
          alpha=0.5)
 bin_centers = [(age_bins[i] + age_bins[i + 1]) / 2 for i in range(len(age_bins) - 1)]
-plt.xticks(bin_centers, age_labels, rotation=45)
+ax.set_xticks(bin_centers)
+ax.set_xticklabels(age_labels, rotation=45)
 
-plt.xlabel("Age")
-plt.ylabel("Number of people")
-plt.title("Age distribution, 1900 vs 2000")
-plt.legend()
+ax.set_xlabel("Age")
+ax.set_ylabel("Number of people")
+ax.set_title("Age distribution, 1900 vs 2000")
+ax.legend()
+fig.text(
+    0.5, 0.01,
+    'Population distribution by age for the years 1900 and 2000', 
+    ha='center', fontsize=10, style='italic'
+)
+fig.tight_layout(rect=[0, 0.05, 1, 1])
 
 # Save plot as .png file in folder
-plt.savefig("age_distribution_1900_vs_2000.png")
+fig.savefig("age_distribution_1900_vs_2000.png")
